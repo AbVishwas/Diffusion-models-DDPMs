@@ -8,7 +8,7 @@ __pycache__/
 
 #data and slurm
 01_Data/
-slurm*
+#slurm*
 
 # Distribution / packaging
 .Python

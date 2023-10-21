@@ -1,0 +1,10 @@
+This job can be monitored from: https://scruffy.c3se.chalmers.se/d/alvis-job/alvis-job?var-jobid=1486960&from=1697896622000
+Warning: The Anaconda module is not recommended for common use cases.
+See our Python documentation for recomended procedure for Python packages.
+https://www.c3se.chalmers.se/documentation/applications/python/
+Using device: cuda	Model name: NVIDIA A40
+x_train:(84480, 64, 64, 1)
+x_dev:(10560, 64, 64, 1)
+x_test:(20480, 64, 64, 1)
+Mean:6.953316273400439
+Semidisp:5.714417197471417

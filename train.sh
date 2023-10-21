@@ -4,11 +4,6 @@
 #SBATCH -t 0-11:00:00 # time
 
 
-#module load AlphaFold/2.1.2-fosscuda-2020b-TensorFlow-2.5.0
-#module load AlphaFold/2.2.2-foss-2021a-CUDA-11.3.1
-#module load cuDNN/8.2.1.32-CUDA-11.3.1
-#module load Seaborn/0.11.2-foss-2021a
-
 source ../../load_modules.sh
 
 

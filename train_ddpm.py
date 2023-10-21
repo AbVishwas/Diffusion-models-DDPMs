@@ -3,6 +3,7 @@ import random
 import imageio
 import numpy as np
 import os
+import h5py
 from argparse import ArgumentParser
 import torch
 import torch.nn as nn
@@ -13,11 +14,13 @@ from torchvision.datasets.mnist import MNIST, FashionMNIST
 
 from utils.myDDPM import DDPM, training_loop
 from utils.unet import MyBlock, MyUnet
+from utils.turbRotDataloader import turbRotDataset
 
 from config import config
 
 os.environ["CUDA_DEVICE_ORDER"]     = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"]  = "0"
+os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE" # Unlock the h5py file
 
 
 #for reproducibility
@@ -52,13 +55,27 @@ n_steps    = config.n_steps
 device = config.device
 print(f"Using device: {device}\t" + (f"Model name: {torch.cuda.get_device_name(0)}"))
 
+with h5py.File(data_dir, 'r') as hf:
+        Mean = np.array(hf.get('Mean'))
+        Semidisp = np.array(hf.get('Semidisp'))   #???
+        x_train = np.array(hf.get('train'))
+        x_dev = np.array(hf.get('dev'))
+        x_test = np.array(hf.get('test'))
 
-# converting images to tensor and normalizing
+print(f"x_train:{x_train.shape}")
+print(f"x_dev:{x_dev.shape}")
+print(f"x_test:{x_test.shape}")
+print(f"Mean:{Mean}")
+print(f"Semidisp:{Semidisp}")
 
-transform = Compose([                                    #Compose class is typically used to define pipelines to perfrom data processing (mostly for images)
-    ToTensor(),                                          #ToTensor() convert image to pytorch tensor in (Channel, Height, width)
-    Lambda(lambda x: (x - 0.5)*2)                         #Custom lambda function: substracts 0.5 from each element and multiplies by 2. To normalize the data between [-1,1]
-])
+quit()
+dataset = turbRotDataset(data_dir=data_dir)
+turbRot_dataloader = DataLoader(dataset, batch_size = batch_size, shuffle=True )
+
+for i, batch in enumerate(turbRot_dataloader):
+
+    print(f"shape of train data in batch {i} is {batch.shape} ")
+
 
 
 ds_fn = FashionMNIST if fashion else MNIST
