@@ -1,35 +1,45 @@
 import torch
+import numpy as np
+import os
+
 from utils.myDDPM import DDPM
 from utils.unet import MyBlock, MyUnet
-import os
 from utils.post_proc_images import show_images, generate_new_images
 from utils.ddpm_videos import animationDDPM
-import numpy as np
+
+from config import config
 
 os.environ["CUDA_DEVICE_ORDER"]     = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"]  = "0"
 
+
+
 #dir
-parent_dir = os.getcwd()
-parent_dir += '/' 
-data_dir = parent_dir + "01_Data/"
-checkpt_dir = parent_dir + "02_checkpoints/"
-pred_dir = parent_dir + "03_preds/"
-results = parent_dir + "04_results/"
+parent_dir  = os.getcwd()
+parent_dir += '/'
+data_dir    = parent_dir + config.data_dir
+checkpt_dir = parent_dir + config.checkpt_dir
+pred_dir    = parent_dir + config.pred_dir
+results_dir = parent_dir + config.results_dir
+
 
 #definitions
-checkpoint = checkpt_dir + "ddpm_model_fashion.pt"
+checkpoint  = checkpt_dir + config.checkpt_path
+video_path  = results_dir + config.video_path
 
 #config
-no_train = False
-fashion = True #weather to use fashion MNIST or normal MNIST
-batch_size = 128
-n_epochs = 20
-lr = 0.001
-n_steps, min_beta, max_beta = 1000, 10 ** -4, 0.02  # Originally used by the authors
+#no_train   = config.no_train
+#fashion    = config.fashion   
+#batch_size = config.batch_size
+#n_epochs   = config.n_epochs
+#lr         = config.lr
+#min_beta   = config.min_beta
+#max_beta   = config.max_beta
+n_samples  = config.n_samples
+n_steps    = config.n_steps 
 
 #Getting Device
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = config.device
 print(f"Using device: {device}\t" + (f"Model name: {torch.cuda.get_device_name(0)}"))
 
 
@@ -42,18 +52,18 @@ print("Model loaded")
 
 
 print("Generating new images")
-generated, frames = generate_new_images(    #, frames
+generated, frames = generate_new_images( 
         best_model,
         n_samples=100,
         device=device,
     )
 
-
+#grid size
 x = np.linspace(0,279, 280)
 y = np.linspace(0,279, 280)
 
 
-animation = animationDDPM(frames, results + "frames.mp4", fps = 2, x=x, y=y)
+animation = animationDDPM(frames, video_path, fps = 4, x=x, y=y)
 animation.create_video()
 
 print("saved animation")

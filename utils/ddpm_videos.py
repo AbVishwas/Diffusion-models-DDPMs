@@ -34,7 +34,7 @@ class animationDDPM:
 
         self.ax.clear()
         self.clb = self.ax.contourf(self.x_grid, self.y_grid ,np.array(self.images[i][:,:,0]))   # cmap ='inferno'   , levels = 200
-        self.ax.set_title('denoising images t = 0' , fontdict= {"size":40})
+        self.ax.set_title(f'denoising images at t ={i}' , fontdict= {"size":40})
         #self.ax.set_xlabel('U #{}'.format(frame, fontdict= {"size":40}))
         
         return [self.clb]
