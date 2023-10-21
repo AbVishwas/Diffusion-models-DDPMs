@@ -55,40 +55,17 @@ n_steps    = config.n_steps
 device = config.device
 print(f"Using device: {device}\t" + (f"Model name: {torch.cuda.get_device_name(0)}"))
 
-with h5py.File(data_dir, 'r') as hf:
-        Mean = np.array(hf.get('Mean'))
-        Semidisp = np.array(hf.get('Semidisp'))   #???
-        x_train = np.array(hf.get('train'))
-        x_dev = np.array(hf.get('dev'))
-        x_test = np.array(hf.get('test'))
 
-print(f"x_train:{x_train.shape}")
-print(f"x_dev:{x_dev.shape}")
-print(f"x_test:{x_test.shape}")
-print(f"Mean:{Mean}")
-print(f"Semidisp:{Semidisp}")
-
-quit()
 dataset = turbRotDataset(data_dir=data_dir)
 turbRot_dataloader = DataLoader(dataset, batch_size = batch_size, shuffle=True )
 
-for i, batch in enumerate(turbRot_dataloader):
-
-    print(f"shape of train data in batch {i} is {batch.shape} ")
-
-
-
-ds_fn = FashionMNIST if fashion else MNIST
-dataset = ds_fn(data_dir, download=False, train=True, transform=transform)    #when downloading data from torchvision, download=True (download if already not there), train=true(perform train test split), transform (aply the transform pipeline)
-loader = DataLoader(dataset, batch_size, shuffle=True)
 
 ddpm = DDPM(MyUnet(n_steps), n_steps=n_steps, min_beta=min_beta, max_beta=max_beta, device=device)
-
 print(f"Number of parameters: {sum([p.numel() for p in ddpm.parameters()])}")
 
 
 if not no_train:
-  training_loop(ddpm, loader, n_epochs, optim=Adam(ddpm.parameters(), lr), device = device, store_path= checkpoint)
+  training_loop(ddpm, turbRot_dataloader, n_epochs, optim=Adam(ddpm.parameters(), lr), device = device, store_path= checkpoint)
 
 
 print(f"training is complete")
