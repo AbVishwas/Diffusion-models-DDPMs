@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+#data and slurm
+01_Data/
+slurm*
+
 # Distribution / packaging
 .Python
 build/
