@@ -28,8 +28,7 @@ checkpoint  = checkpt_dir + config.checkpt_path
 video_path  = results_dir + config.video_path
 
 #config
-#no_train   = config.no_train
-#fashion    = config.fashion   
+#no_train   = config.no_train 
 #batch_size = config.batch_size
 #n_epochs   = config.n_epochs
 #lr         = config.lr
@@ -59,8 +58,8 @@ generated, frames = generate_new_images(
     )
 
 #grid size
-x = np.linspace(0,279, 280)
-y = np.linspace(0,279, 280)
+x = np.linspace(0,639, 640)
+y = np.linspace(0,639, 640)
 
 
 animation = animationDDPM(frames, video_path, fps = 4, x=x, y=y)

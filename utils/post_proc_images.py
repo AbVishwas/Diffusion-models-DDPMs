@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import einops
 import matplotlib.pyplot as plt
+from config import config
 
 def show_images(images, title= ""):
   """
@@ -56,7 +57,7 @@ def show_forward(ddpm, loader, device):
       break
 
 
-def generate_new_images(ddpm, n_samples=16, device=None, frames_per_gif=100, c=1, h=28, w=28):
+def generate_new_images(ddpm, n_samples=16, device=None, frames_per_gif=100, c=1, h=config.h, w=config.w):
     """Given a DDPM model, a number of samples to be generated and a device, returns some newly generated samples"""
     frame_idxs = np.linspace(0, ddpm.n_steps, frames_per_gif).astype(np.uint)
     frames = []

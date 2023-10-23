@@ -42,8 +42,7 @@ results_dir = parent_dir + config.results_dir
 checkpoint  = checkpt_dir + config.checkpt_path
 
 #config
-no_train   = config.no_train
-fashion    = config.fashion   
+no_train   = config.no_train  
 batch_size = config.batch_size
 n_epochs   = config.n_epochs
 lr         = config.lr 
