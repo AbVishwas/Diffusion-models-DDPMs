@@ -28,7 +28,7 @@ class config:
         no_train   = False
         fashion    = True                #weather to use fashion MNIST or normal MNIST
         batch_size = 128
-        n_epochs   = 50
+        n_epochs   = 30
         lr         = 0.001
         n_steps    = 1000
         min_beta   = 10 ** -4

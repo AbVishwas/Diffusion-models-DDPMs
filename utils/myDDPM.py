@@ -47,7 +47,8 @@ def training_loop(ddpm, loader, n_epochs, optim, device, display= False, store_p
         epoch_loss =0.0
         for step, batch in enumerate(loader):  #enumerate(tqdm(loader, leave=False, desc=f"Epoch {epoch +1}/{n_epochs}", colour="#005500")):
             #load data
-                       
+
+            print(x0.shape)
             x0 = batch.to(device).float()
             
             n = len(x0)

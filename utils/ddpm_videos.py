@@ -24,7 +24,7 @@ class animationDDPM:
 
     def init_animation(self):
         self.ax.clear()
-        self.clb = self.ax.contourf(self.x_grid, self.y_grid, np.array(self.images[0][:,:,0] ))
+        self.clb = self.ax.contourf(self.x_grid, self.y_grid, np.array(self.images[0][:,:,0] ), cmap ='RdBu', levels = 200)
         self.ax.set_title('denoising images t = 0' , fontdict= {"size":40})
         #self.ax.set_xlabel(' #{}'.format(0, fontdict= {"size":40}))
         
@@ -33,10 +33,15 @@ class animationDDPM:
     def update_animation(self, i):
 
         self.ax.clear()
-        self.clb = self.ax.contourf(self.x_grid, self.y_grid ,np.array(self.images[i][:,:,0]))   # cmap ='inferno'   , levels = 200
+        self.clb = self.ax.contourf(self.x_grid, self.y_grid ,np.array(self.images[i][:,:,0]), cmap ='RdBu', levels = 200 )   # cmap ='inferno'   , levels = 200
         self.ax.set_title(f'denoising images at t ={i}' , fontdict= {"size":40})
         #self.ax.set_xlabel('U #{}'.format(frame, fontdict= {"size":40}))
         
+        if i %11 == 0:
+            # Save each frame as an image
+            frame_filename = f'{self.output}_f_{i:03d}.png'
+            self.figure.savefig(frame_filename, dpi=100)
+
         return [self.clb]
 
     def create_video(self):

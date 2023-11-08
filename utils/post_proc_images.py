@@ -15,16 +15,16 @@ def show_images(images, title= ""):
 
   #Converting the images to CPU numpy arrays
   if type(images) is torch.Tensor:                   
-    images = images.detach().cpu().numpy()   
-   # print("yes")        
-                                                     
-                                                     
-
+    images = images.detach().cpu().numpy()         
+  
+  #print(f"shape of image batch in show images:{images.shape}")
   #define the number of rows and coloumns
-  fig = plt.figure(figsize = (8,8))
+  
   rows = int(len(images)**(0.5))
   cols = round(len(images)/rows)
 
+  figsize = (cols * 2, rows * 2) 
+  fig = plt.figure(figsize = figsize)
 
   #Add figures
   idx = 0
@@ -33,11 +33,12 @@ def show_images(images, title= ""):
       fig.add_subplot(rows, cols, idx+1)
 
       if idx < len(images):
-        plt.imshow(images[idx][0], cmap = 'gray')
+        plt.imshow(images[idx][0], cmap = 'RdBu')
         idx+=1
-  fig.suptitle(title, fontsize = 30)
-
-  plt.show()  
+  fig.suptitle(title, fontsize = 10)
+  plt.tight_layout()
+  plt.savefig(config.results_dir + title)
+  #plt.show()  
 
 
 
@@ -45,8 +46,8 @@ def show_forward(ddpm, loader, device):
   # Showing the forward process
   #ddpm is actually the DDPM class which will be fed
   for batch in loader:
-      imgs = batch[0]
-
+      imgs = batch[:15]                 #earlier this was batch[0] 
+      #print(f"shape of image batch in show forward images:{imgs.shape}")
       show_images(imgs, "Original images")
 
       for percent in [0.25, 0.5, 0.75, 1]:
@@ -57,7 +58,7 @@ def show_forward(ddpm, loader, device):
       break
 
 
-def generate_new_images(ddpm, n_samples=16, device=None, frames_per_gif=100, c=1, h=config.h, w=config.w):
+def generate_new_images(ddpm, n_samples=4, device=None, frames_per_gif=100, c=1, h=config.h, w=config.w):
     """Given a DDPM model, a number of samples to be generated and a device, returns some newly generated samples"""
     frame_idxs = np.linspace(0, ddpm.n_steps, frames_per_gif).astype(np.uint)
     frames = []
